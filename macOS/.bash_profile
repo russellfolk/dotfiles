@@ -68,9 +68,9 @@ cpu_util () { # macOS specific
 }
 
 mem_util () { # macOS specific
-	local RED="\e[0;31m\]"
-	local GREEN="\e[0;32m\]"
-	local YELLOW="\e[0;93m\]"
+	local RED="\e[2;31m\]"
+	local GREEN="\e[2;32m\]"
+	local YELLOW="\e[2;93m\]"
 	
 	# grab the number of pages free
 	local FREE_PAGES=`sysctl -a vm | grep page_free_count | awk '{ print $2}'`
