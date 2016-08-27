@@ -29,6 +29,7 @@ prompt_command ()
 {
 	local TIME=`fmt_time`
 	local CPU=`cpu_util`
+	local MEM=`mem_util`
 	local RESET="\e[0;39m\]"
 	local BOLD_BLUE="\e[1;34m\]"
 	local BLUE="\e[0;34m\]"
@@ -40,7 +41,7 @@ prompt_command ()
 	local CYAN="\e[0;36m\]"
 
 	export PS1="${LIGHT_GREY}[ ${BRIGHT_LBLUE}\u${LIGHT_GREY}@${CYAN}\h \
-$CPU ${WHITE}${TIME} ${LIGHT_GREY}] ${MAGENTA}\w${RESET}\n\$ "
+$CPU $MEM ${WHITE}${TIME} ${LIGHT_GREY}] ${MAGENTA}\w${RESET}\n\$ "
 }
 PROMPT_COMMAND=prompt_command
 
@@ -64,4 +65,26 @@ cpu_util () { # macOS specific
 		printf "${GREEN}"
 	fi
 	printf "%.1f%%" $UTIL
+}
+
+mem_util () { # macOS specific
+	local RED="\e[0;31m\]"
+	local GREEN="\e[0;32m\]"
+	local YELLOW="\e[0;93m\]"
+	
+	# grab the number of pages free
+	local FREE_PAGES=`sysctl -a vm | grep page_free_count | awk '{ print $2}'`
+	local PAGE_SIZE=`pagesize`
+	local GB=1073741824 # 1024^3
+
+	local UTIL=`awk -v n=$FREE_PAGES -v nn=$PAGE_SIZE -v d=$GB 'BEGIN{ print (n*nn/d) }'`
+	local FLOOR=$(printf "%.0f" ${UTIL})
+	if [ $FLOOR -lt 1 ]; then
+		printf "${RED}"
+	elif [ $FLOOR -lt 3 ]; then
+		printf "${YELLOW}"
+	else
+		printf "${GREEN}"
+	fi
+	printf "MEM"
 }
