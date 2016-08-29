@@ -65,9 +65,9 @@ mem_util () { # macOS specific
 
 	local UTIL=`awk -v n=$FREE_PAGES -v nn=$PAGE_SIZE -v d=$GB 'BEGIN{ print (n*nn/d) }'`
 	local FLOOR=$(printf "%.0f" ${UTIL})
-	if [ $FLOOR -lt 1 ]; then
+	if [ $FLOOR -eq 0 ]; then
 		printf "${RED}"
-	elif [ $FLOOR -lt 3 ]; then
+	elif [ $FLOOR -lt 1 ]; then
 		printf "${YELLOW}"
 	else
 		printf "${GREEN}"
