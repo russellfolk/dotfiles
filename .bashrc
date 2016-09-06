@@ -12,6 +12,8 @@ alias ....='cd ../../..'
 alias c='clear'
 # generate sha1 digest
 alias sha1='openssl sha1'
+# diagnostic aliases
+alias gg='ping -c 3 www.google.com'
 
 # Useful functions
 extract() {
