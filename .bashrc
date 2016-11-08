@@ -46,3 +46,8 @@ fmt_time () { #format time just the way I likes it
     fi
     date +"%l:%M:%S$meridiem"|sed 's/ //g'
 }
+
+# simple count of elements in a directory
+count () {
+        ls -l ${1} | wc -l
+}
